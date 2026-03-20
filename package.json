@@ -17,6 +17,7 @@
     "build:dashboard": "npm run build --workspace @stackfox/dashboard",
     "build:api": "npm run prisma:generate --workspace @stackfox/api",
     "lint": "npm run lint --workspaces --if-present",
+    "predeploy:api": "npm run prisma:deploy --workspace @stackfox/api",
     "start:dashboard": "npm run start --workspace @stackfox/dashboard",
     "start:api": "npm run start --workspace @stackfox/api",
     "test": "npm run test --workspaces --if-present",

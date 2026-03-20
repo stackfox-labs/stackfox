@@ -76,11 +76,19 @@ Each `railway.json` file tells Railway:
 For this monorepo, each service uses a root-level script:
 
 - API build: `npm run build:api`
+- API pre-deploy: `npm run predeploy:api`
 - API start: `npm run start:api`
 - Dashboard build: `npm run build:dashboard`
 - Dashboard start: `npm run start:dashboard`
 
 This avoids Railpack guessing the wrong runtime shape for the dashboard and keeps the API startup tied to the same workspace command we run locally.
+
+For Prisma on the API:
+
+- `build:api` runs `prisma generate` so the Prisma client is baked into the built image
+- `predeploy:api` runs `prisma db push` so the database schema is synced before the new deployment goes live
+
+Do not move `prisma generate` into pre-deploy. Railway runs pre-deploy in a separate step, so generated files from that phase are not the right place to prepare runtime artifacts.
 
 ### Deploying on Railway
 
