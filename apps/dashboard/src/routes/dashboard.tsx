@@ -76,7 +76,7 @@ function DashboardLayout() {
         <div className="w-full max-w-sm border-2 border-zinc-900 bg-white shadow-brutal-xl">
           <div className="border-b-2 border-zinc-900 bg-zinc-950 px-6 py-4">
             <div className="flex items-center gap-3">
-              <Logo type="full" size="5" />
+              <Logo type="icon-only" size="5" />
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-zinc-500">Dashboard</p>
             </div>
           </div>

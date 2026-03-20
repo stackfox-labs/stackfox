@@ -1,9 +1,6 @@
 import { createContext, startTransition, useContext, useEffect, useState } from "react"
 import type {AuthProject, AuthSessionState, AuthUser} from "@/lib/auth";
 import {
-  
-  
-  
   createProject as createProjectRequest,
   deleteProject as deleteProjectRequest,
   fetchAuthSession,
