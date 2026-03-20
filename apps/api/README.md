@@ -18,11 +18,14 @@ Copy `.env.example` to `.env` and set real values where needed.
 PORT=3443
 DATABASE_URL=postgres://postgres:postgres@localhost:5432/stackfox
 APP_ORIGIN=http://localhost:3442
+APP_ORIGINS=http://localhost:3442
 ROBLOX_OAUTH_CLIENT_ID=
 ROBLOX_OAUTH_CLIENT_SECRET=
 ROBLOX_OAUTH_REDIRECT_URI=http://localhost:3443/auth/roblox/callback
 ROBLOX_OAUTH_SCOPES=openid profile
 ```
+
+`APP_ORIGIN` is the primary dashboard origin used for browser redirects. `APP_ORIGINS` is the allowlist used by CORS and can contain one or more origins separated by commas or spaces.
 
 ## Scripts
 

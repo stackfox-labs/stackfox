@@ -31,12 +31,13 @@ const app = express();
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || origin === config.appOrigin) {
+      const normalizedOrigin = origin?.replace(/\/+$/, "");
+      if (!normalizedOrigin || config.allowedAppOrigins.includes(normalizedOrigin)) {
         callback(null, true);
         return;
       }
 
-      callback(new Error("Origin not allowed by CORS"));
+      callback(new Error(`Origin not allowed by CORS: ${normalizedOrigin}`));
     },
     credentials: true,
   }),
