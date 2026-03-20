@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev --port 3442",
     "build": "vite build",
+    "start": "node .output/server/index.mjs",
     "preview": "vite preview",
     "test": "vitest run --passWithNoTests",
     "lint": "eslint src/components/auth src/components/dashboard src/lib/auth.ts src/lib/dashboard.ts src/lib/utils.ts src/routes",
