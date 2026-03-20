@@ -73,12 +73,12 @@ Each `railway.json` file tells Railway:
 - which command starts the service
 - which path to healthcheck after deploy
 
-For this monorepo, the commands stay workspace-aware:
+For this monorepo, each service uses a root-level script:
 
-- API build: `npm run prisma:generate --workspace @stackfox/api`
-- API start: `npm run start --workspace @stackfox/api`
-- Dashboard build: `npm run build --workspace @stackfox/dashboard`
-- Dashboard start: `npm run start --workspace @stackfox/dashboard`
+- API build: `npm run build:api`
+- API start: `npm run start:api`
+- Dashboard build: `npm run build:dashboard`
+- Dashboard start: `npm run start:dashboard`
 
 This avoids Railpack guessing the wrong runtime shape for the dashboard and keeps the API startup tied to the same workspace command we run locally.
 
@@ -88,11 +88,29 @@ This avoids Railpack guessing the wrong runtime shape for the dashboard and keep
 2. Create one service for the API and point its Railway config path at `/apps/api/railway.json`.
 3. Create one service for the dashboard and point its Railway config path at `/apps/dashboard/railway.json`.
 4. Add a PostgreSQL service and expose its connection string to the API as `DATABASE_URL`.
-5. Set API variables
-6. Set dashboard variables
+5. Set API variables:
+
+    ```env
+    PORT=8080
+    DATABASE_URL=
+    APP_ORIGIN=https://dashboard.your-domain.com
+    ROBLOX_OAUTH_CLIENT_ID=
+    ROBLOX_OAUTH_CLIENT_SECRET=
+    ROBLOX_OAUTH_REDIRECT_URI=https://api.your-domain.com/auth/roblox/callback
+    ROBLOX_OAUTH_SCOPES=openid profile
+    ```
+
+6. Set dashboard variables:
+
+    ```env
+    VITE_STACKFOX_API_URL=https://api.your-domain.com
+    ```
+
 7. Attach domains after both services are healthy.
 
 The API health endpoint is `GET /health`. The dashboard healthcheck is `/`.
+
+Keep both services building from the monorepo root so npm workspaces and the shared lockfile are available. Do not use `Add Root Directory` for this repo unless each app gets its own independent lockfile and install flow.
 
 ## Contributing
 
