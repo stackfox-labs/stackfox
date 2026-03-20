@@ -2,7 +2,7 @@
 
 The in-development Luau SDK for StackFox.
 
-This package is meant to be used from Roblox to send events and read or write records through the StackFox API.
+Use this package in your Roblox game to send events and read or write records through the StackFox platform.
 
 ## Implemented API
 

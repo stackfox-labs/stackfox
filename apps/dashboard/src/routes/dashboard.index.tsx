@@ -47,7 +47,7 @@ function DashboardIndex() {
           <div className="border-b-2 border-zinc-900 bg-zinc-950 px-6 py-4">
             <h1 className="text-xl font-black text-white">Create your first project</h1>
             <p className="mt-1 text-xs text-zinc-500">
-              A project holds your models, records, and API keys.
+              A project holds your events, records, and API keys.
             </p>
           </div>
 

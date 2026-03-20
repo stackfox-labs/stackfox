@@ -24,7 +24,7 @@ function LogsPage() {
           </div>
           <p className="text-lg font-bold text-zinc-900">No activity yet</p>
           <p className="mx-auto mt-1 max-w-md text-sm text-zinc-600">
-            Once your game starts using StackFox, schema applies, record CRUD, errors, and validation failures will be logged here.
+            Once your game starts using StackFox, events, record writes, errors, and API calls will be logged here.
           </p>
         </div>
       )}

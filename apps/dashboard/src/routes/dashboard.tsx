@@ -39,7 +39,7 @@ function DashboardLayout() {
           <div className="mx-auto mb-4 h-12 w-12 border-2 border-zinc-900 bg-zinc-950" />
           <h1 className="text-2xl font-black text-zinc-950">Sign in to StackFox</h1>
           <p className="mt-2 text-sm text-zinc-600">
-            Access your projects, models, and records from the developer dashboard.
+            Access your projects, events, and records from the developer dashboard.
           </p>
           {auth.oauthConfigured ? (
             <Button className="mt-6 w-full" onClick={() => auth.login("/dashboard")}>
