@@ -5,6 +5,10 @@
     "apps/*",
     "packages/*"
   ],
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": "24.14.0"
+  },
   "scripts": {
     "dev": "node ./scripts/dev.mjs",
     "dev:dashboard": "npm run dev --workspace @stackfox/dashboard",
