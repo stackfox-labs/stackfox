@@ -1,28 +1,31 @@
 --!strict
 
 local HttpService = game:GetService("HttpService")
-local Retry = require("./retry")
-local Errors = require("../utils/errors")
-local Types = require("../utils/types")
 
-type State = Types.State
+local Retry  = require("./retry")
+local Errors = require("../utils/errors")
+local Types  = require("../types")
+
+type State      = Types.State
 type HttpMethod = Types.HttpMethod
-type RequestFn = Types.RequestFn
-type RequestOptions = Types.RequestOptions
+type RequestFn  = Types.RequestFn
 
 local Request = {}
 
 local function buildUrl(baseUrl: string, path: string): string
-	local normalizedBase = baseUrl
-	if string.sub(normalizedBase, -1) == "/" then
-		normalizedBase = string.sub(normalizedBase, 1, #normalizedBase - 1)
+	local base = baseUrl
+	if string.sub(base, -1) == "/" then
+		base = string.sub(base, 1, #base - 1)
 	end
-
-	return normalizedBase .. path
+	return base .. path
 end
 
 function Request.create(getState: () -> State): RequestFn
-	return function(method: HttpMethod, path: string, body: any?, options: RequestOptions?)
+	return function(
+		method: HttpMethod,
+		path: string,
+		body: { [string]: any }?
+	): { [string]: any }
 		local state = getState()
 		local config = state.config
 		if not config then
@@ -30,38 +33,29 @@ function Request.create(getState: () -> State): RequestFn
 			return {}
 		end
 
-		local payload = nil
+		local payload: string? = nil
 		if body ~= nil then
 			payload = HttpService:JSONEncode(body)
 		end
 
-		local environment = if options and options.environment then options.environment else config.environment
-		local origin = if options and options.origin then options.origin else config.requestOrigin
-
 		local response = Retry.run(function()
-			local requestOptions = {
-				Url = buildUrl(config.baseUrl, path),
+			return HttpService:RequestAsync({
+				Url    = buildUrl(config.baseUrl, path),
 				Method = method,
 				Headers = {
 					["Content-Type"] = "application/json",
 					["Authorization"] = "Bearer " .. config.apiKey,
-					["x-stackfox-environment"] = environment,
-					["x-stackfox-origin"] = origin,
 				},
-				Body = payload,
+				Body     = payload,
 				Compress = Enum.HttpCompression.None,
-			}
-			return HttpService:RequestAsync(requestOptions)
+			})
 		end, 2)
 
-		local decoded = nil
+		local decoded: { [string]: any }? = nil
 		if response.Body and response.Body ~= "" then
-			local ok, result = pcall(function()
-				return HttpService:JSONDecode(response.Body)
-			end)
-
+			local ok, result = pcall(HttpService.JSONDecode, HttpService, response.Body)
 			if ok then
-				decoded = result
+				decoded = result :: { [string]: any }
 			end
 		end
 

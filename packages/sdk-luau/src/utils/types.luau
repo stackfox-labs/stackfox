@@ -1,34 +1,16 @@
 --!strict
+-- Moved to `src/types.luau`. This shim exists for backwards compatibility.
+-- Update any imports to use `../types` (or `@self/types` from the root).
 
-export type Environment = "development" | "production"
-export type RequestOrigin = "studio" | "runtime"
-export type HttpMethod = "CONNECT" | "DELETE" | "GET" | "HEAD" | "OPTIONS" | "PATCH" | "POST" | "PUT" | "TRACE"
+local Types = require("../types")
 
-export type Config = {
-	apiKey: string,
-	environment: Environment,
-	baseUrl: string,
-	requestOrigin: RequestOrigin,
-}
-
-export type State = {
-	config: Config?,
-	initResult: any,
-}
-
-export type RequestOptions = {
-	environment: Environment?,
-	origin: RequestOrigin?,
-}
-
-export type RequestFn = (method: HttpMethod, path: string, body: any?, options: RequestOptions?) -> any
-
-local Types = {
-	DEFAULT_ENVIRONMENT = "production" :: Environment,
-	VALID_ENVIRONMENTS = {
-		development = true,
-		production = true,
-	} :: { [string]: boolean },
-}
+export type HttpMethod     = Types.HttpMethod
+export type InitConfig     = Types.InitConfig
+export type Config         = Types.Config
+export type State          = Types.State
+export type RequestFn      = Types.RequestFn
+export type EventResponse  = Types.EventResponse
+export type RecordEnvelope = Types.RecordEnvelope
+export type TypedStore<T>  = Types.TypedStore<T>
 
 return Types
