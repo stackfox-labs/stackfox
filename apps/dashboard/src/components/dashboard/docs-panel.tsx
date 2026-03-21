@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react"
 interface DocsPanelProps {
   open: boolean
   siteUrl: string
+  /** Optional slug within /docs to open the panel at, e.g. "quick-start". Navigates the iframe when the panel opens. */
+  startSlug?: string
 }
 
 const MIN_WIDTH = 280
@@ -10,7 +12,7 @@ const MAX_WIDTH = 720
 const DEFAULT_WIDTH = 380
 const STORAGE_KEY = "sf-docs-width"
 
-export function DocsPanel({ open, siteUrl }: DocsPanelProps) {
+export function DocsPanel({ open, siteUrl, startSlug }: DocsPanelProps) {
   const [width, setWidth] = useState(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
@@ -22,9 +24,20 @@ export function DocsPanel({ open, siteUrl }: DocsPanelProps) {
     return DEFAULT_WIDTH
   })
 
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   const isResizing = useRef(false)
   const startX = useRef(0)
   const startWidth = useRef(0)
+
+  // Navigate the iframe to a specific docs page when startSlug is set.
+  // Don't touch src for the default case — the initial src attribute handles that.
+  const prevStartSlug = useRef<string | undefined>(undefined)
+  useEffect(() => {
+    if (!open || !startSlug || !iframeRef.current) return
+    if (startSlug === prevStartSlug.current) return
+    prevStartSlug.current = startSlug
+    iframeRef.current.src = `${siteUrl}/docs/${startSlug}?frame=1`
+  }, [open, startSlug, siteUrl])
 
   useEffect(() => {
     function onMouseMove(e: MouseEvent) {
@@ -91,9 +104,10 @@ export function DocsPanel({ open, siteUrl }: DocsPanelProps) {
         <span className="text-[10px] text-zinc-400">stackfox.dev</span>
       </div>
 
-      {/* iframe */}
+      {/* iframe — restricted to /docs/** via frame=1 embedded mode */}
       <iframe
-        src={siteUrl}
+        ref={iframeRef}
+        src={`${siteUrl}/docs?frame=1`}
         title="StackFox Documentation"
         className="flex-1 w-full border-0"
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"

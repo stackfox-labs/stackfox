@@ -1,8 +1,7 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { DatabaseIcon } from "lucide-react"
+import { createFileRoute } from "@tanstack/react-router"
+import { BookOpenIcon, DatabaseIcon } from "lucide-react"
 import { useState } from "react"
 import { useProject } from "@/components/dashboard/project-context"
-import { Button } from "@/components/ui/button"
 
 export const Route = createFileRoute("/dashboard/projects/$projectId/records")({
   component: RecordsPage,
@@ -48,9 +47,14 @@ function RecordsPage() {
                 StackFox.records:set(...)
               </code>
             </p>
-            <Button asChild size="sm" className="mt-4">
-              <Link to="/dashboard/projects/$projectId/setup" params={{ projectId }}>View Setup</Link>
-            </Button>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("stackfox:open-docs", { detail: { slug: "records" } }))}
+              className="mt-4 inline-flex cursor-pointer items-center gap-1.5 border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-900"
+            >
+              <BookOpenIcon className="h-3.5 w-3.5" />
+              Records docs
+            </button>
           </div>
         )}
 

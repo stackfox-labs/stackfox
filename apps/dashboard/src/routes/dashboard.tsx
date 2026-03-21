@@ -13,7 +13,7 @@ export const Route = createFileRoute("/dashboard")({
 })
 
 const DOCS_KEY = "sf-docs-open"
-const DOCS_URL = (import.meta.env.VITE_STACKFOX_SITE_URL as string | undefined) ?? "https://stackfox.dev"
+const DOCS_URL = (import.meta.env.VITE_STACKFOX_SITE_URL as string | undefined) ?? "http://localhost:3441"
 
 function DashboardLayout() {
   const auth = useAuth()
@@ -36,6 +36,7 @@ function DashboardLayout() {
       return false
     }
   })
+  const [docsStartSlug, setDocsStartSlug] = useState<string | undefined>()
 
   // Refresh state for topbar
   const [refreshing, setRefreshing] = useState(false)
@@ -45,6 +46,17 @@ function DashboardLayout() {
       localStorage.setItem(DOCS_KEY, docsOpen ? "1" : "0")
     } catch {}
   }, [docsOpen])
+
+  // Allow any page to open the docs panel to a specific page via custom event
+  useEffect(() => {
+    function onOpenDocs(e: Event) {
+      const slug = (e as CustomEvent<{ slug?: string }>).detail?.slug
+      setDocsOpen(true)
+      if (slug) setDocsStartSlug(slug)
+    }
+    window.addEventListener("stackfox:open-docs", onOpenDocs)
+    return () => window.removeEventListener("stackfox:open-docs", onOpenDocs)
+  }, [])
 
   function handleDocsToggle() {
     setDocsOpen((v) => !v)
@@ -136,7 +148,7 @@ function DashboardLayout() {
         </main>
       </div>
 
-      <DocsPanel open={docsOpen} siteUrl={DOCS_URL} />
+      <DocsPanel open={docsOpen} siteUrl={DOCS_URL} startSlug={docsStartSlug} />
 
       {/* New Project / Link Project Modal */}
       {modalOpen && (

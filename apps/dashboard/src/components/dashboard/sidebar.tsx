@@ -2,7 +2,6 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router"
 import {
   ActivityIcon,
   BookOpenIcon,
-  CodeIcon,
   DatabaseIcon,
   EyeIcon,
   KeyIcon,
@@ -45,7 +44,6 @@ const navItems: Array<NavItem> = [
     icon: LayoutDashboardIcon,
     children: [
       { label: "Overview", path: "", icon: EyeIcon },
-      { label: "Setup", path: "/setup", icon: CodeIcon },
     ],
   },
   {
@@ -89,8 +87,6 @@ function getProjectRoute(path: string) {
     case "":
     case "/":
       return "/dashboard/projects/$projectId" as const
-    case "/setup":
-      return "/dashboard/projects/$projectId/setup" as const
     case "/events":
       return "/dashboard/projects/$projectId/events" as const
     case "/records":

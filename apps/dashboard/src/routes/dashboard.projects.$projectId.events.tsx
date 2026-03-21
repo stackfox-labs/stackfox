@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { MegaphoneIcon } from "lucide-react"
+import { BookOpenIcon, MegaphoneIcon } from "lucide-react"
 import { useState } from "react"
 import { useProject } from "@/components/dashboard/project-context"
 
@@ -46,6 +46,14 @@ function EventsPage() {
                 StackFox.events:track(...)
               </code>
             </p>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("stackfox:open-docs", { detail: { slug: "events" } }))}
+              className="mt-4 inline-flex cursor-pointer items-center gap-1.5 border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-900"
+            >
+              <BookOpenIcon className="h-3.5 w-3.5" />
+              Events docs
+            </button>
           </div>
         )}
 
