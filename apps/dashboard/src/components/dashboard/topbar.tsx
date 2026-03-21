@@ -1,5 +1,5 @@
 import { BookOpenIcon, CheckIcon, ChevronsUpDownIcon, PlusIcon, RefreshCwIcon, SettingsIcon, UsersIcon, XIcon } from "lucide-react"
-import { Link, useNavigate } from "@tanstack/react-router"
+import { Link } from "@tanstack/react-router"
 import type { AuthProject } from "@/lib/auth"
 import {
   DropdownMenu,
@@ -32,8 +32,6 @@ export function Topbar({
   onRefresh,
   refreshing,
 }: TopbarProps) {
-  const navigate = useNavigate()
-
   return (
     <div className="flex h-11 shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-3 gap-2">
       {/* Left: project dropdown */}

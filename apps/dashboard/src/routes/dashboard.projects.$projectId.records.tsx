@@ -8,7 +8,6 @@ export const Route = createFileRoute("/dashboard/projects/$projectId/records")({
 })
 
 function RecordsPage() {
-  const { projectId } = Route.useParams()
   const { overview, loading } = useProject()
 
   const allCollections = overview ? [...new Set(overview.records.map((r) => r.collection))] : []
