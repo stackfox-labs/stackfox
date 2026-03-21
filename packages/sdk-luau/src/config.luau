@@ -12,8 +12,9 @@ Config.DEFAULT_BASE_URL = "https://api.stackfox.dev"
 function Config.normalize(input: InitConfig): ConfigValue
 	assert(type(input) == "table", "[StackFox] init() expects a config table")
 	assert(
-		type(input.apiKey) == "string" and #input.apiKey > 0,
-		"[StackFox] init() — apiKey must be a non-empty string"
+		(type(input.apiKey) == "string" and #(input.apiKey :: string) > 0)
+			or typeof(input.apiKey) == "Secret",
+		"[StackFox] init() — apiKey must be a non-empty string or a Secret"
 	)
 
 	if input.baseUrl ~= nil then

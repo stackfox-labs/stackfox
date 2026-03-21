@@ -1,0 +1,16 @@
+{
+  "name": "stackfox-place",
+  "tree": {
+    "$className": "DataModel",
+
+    "ServerScriptService": {
+      "src": {
+        "$path": "default.project.json"
+      },
+
+      "example": {
+        "$path": "example"
+      }
+    }
+  }
+}

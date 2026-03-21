@@ -5,29 +5,28 @@ local Types = require("./types")
 type RequestFn     = Types.RequestFn
 type EventResponse = Types.EventResponse
 
+export type EventsClass = {
+	track: (self: EventsClass, name: string, payload: { [string]: any }?) -> EventResponse,
+}
+
 local Events = {}
-Events.__index = Events
 
-function Events.new(request: RequestFn)
-	return setmetatable({
-		_request = request,
-	}, Events)
-end
+function Events.new(request: RequestFn): EventsClass
+	return {
+		track = function(_: EventsClass, name: string, payload: { [string]: any }?): EventResponse
+			assert(
+				type(name) == "string" and #name > 0,
+				"[StackFox] events:track() — name must be a non-empty string"
+			)
 
---- Track a named event with an optional payload.
---- Returns the event object created by the API.
-function Events:track(name: string, payload: { [string]: any }?): EventResponse
-	assert(
-		type(name) == "string" and #name > 0,
-		"[StackFox] events:track() — name must be a non-empty string"
-	)
+			local result = request("POST", "/v1/events", {
+				name    = name,
+				payload = (payload or {}) :: { [string]: any },
+			})
 
-	local result = self._request("POST", "/v1/events", {
-		name    = name,
-		payload = payload or {},
-	})
-
-	return result.event :: any
+			return result.event :: any
+		end,
+	}
 end
 
 return Events

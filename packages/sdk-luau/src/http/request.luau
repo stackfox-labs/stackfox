@@ -44,7 +44,9 @@ function Request.create(getState: () -> State): RequestFn
 				Method = method,
 				Headers = {
 					["Content-Type"] = "application/json",
-					["Authorization"] = "Bearer " .. config.apiKey,
+					["Authorization"] = if typeof(config.apiKey) == "Secret"
+						then (config.apiKey :: Secret):AddPrefix("Bearer ")
+						else "Bearer " .. (config.apiKey :: string),
 				},
 				Body     = payload,
 				Compress = Enum.HttpCompression.None,

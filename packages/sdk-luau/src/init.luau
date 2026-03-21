@@ -57,9 +57,8 @@ local StackFox = {
 }
 
 --- Initialize the SDK. Must be called once before `events` or `records` are used.
----
----   StackFox.init({ apiKey = "sk-..." })
----   StackFox.init({ apiKey = "sk-...", environment = "development" })
+--- @param config Initialization config. At minimum, must include `apiKey` and `projectId`.
+---   StackFox.init({ apiKey = "sk-...", projectId = "proj_...", baseUrl = "https://api.stackfox.com/" })
 function StackFox.init(config: InitConfig)
 	state.config = Config.normalize(config)
 	return StackFox

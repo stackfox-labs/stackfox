@@ -13,9 +13,10 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | 
 -- ── User-facing config ────────────────────────────────────────────────────────
 
 --- Shape passed by the user to `StackFox.init()`.
---- Only `apiKey` is required.
+--- Only `apiKey` is required. Accepts a plain string or a Roblox `Secret`
+--- (from `HttpService:GetSecret()`) — prefer secrets in production.
 export type InitConfig = {
-	apiKey: string,
+	apiKey: string | Secret,
 	baseUrl: string?,
 }
 
@@ -23,7 +24,7 @@ export type InitConfig = {
 
 --- Normalized config stored after `init()`.
 export type Config = {
-	apiKey: string,
+	apiKey: string | Secret,
 	baseUrl: string,
 }
 
